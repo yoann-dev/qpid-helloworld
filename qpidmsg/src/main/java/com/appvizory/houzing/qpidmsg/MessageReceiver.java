@@ -13,8 +13,13 @@ public class MessageReceiver {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageReceiver.class.getName());
 
-    @JmsListener(destination = "testqueue")
-    public void processMessage(String message){
-        logger.info("Received message : {}", message);
+    @JmsListener(destination = "testqueue", containerFactory = "queueListenerFactory")
+    public void processMessageQueue(String message){
+        logger.info("Received message on queue: {}", message);
+    }
+
+    @JmsListener(destination = "testqueue", containerFactory = "topicListenerFactory")
+    public void processMessageTopic(String message){
+        logger.info("Received message on topic: {}", message);
     }
 }

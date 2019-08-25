@@ -23,9 +23,18 @@ public class MessageProducer {
     public JmsTemplate jmsTemplate;
 
     @Scheduled(fixedDelay = 5000)
-    public void sendMessage(){
-        final String payload = "Hello from Spring Boot QPID";
+    public void sendMessageQueue(){
+        final String payload = "Hello from Spring Boot QPID Queue";
         logger.info("Sending Message {}", payload);
         this.jmsTemplate.convertAndSend("testqueue", payload);
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void sendMessageTopic(){
+        final String payload = "Hello from Spring Boot QPID Topic";
+        logger.info("Sending Message {}", payload);
+        this.jmsTemplate.setPubSubDomain(true);
+        this.jmsTemplate.convertAndSend("testqueue", payload);
+        this.jmsTemplate.setPubSubDomain(false);
     }
 }
